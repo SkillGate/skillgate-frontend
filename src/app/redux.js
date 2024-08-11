@@ -5,10 +5,7 @@ import {
   useSelector,
   Provider,
 } from "react-redux";
-import globalReducer from "@/state";
-import { api } from "@/state/api";
 import { setupListeners } from "@reduxjs/toolkit/query";
-
 import {
   persistStore,
   persistReducer,
@@ -21,6 +18,9 @@ import {
 } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import { api } from "@/state/api";
+import globalReducer  from '@/state';
+import uiReducer from '@/state/uiReducer';
 
 /* REDUX PERSISTENCE */
 const createNoopStorage = () => {
@@ -45,11 +45,12 @@ const storage =
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["global"],
+  whitelist: ["global","ui"],
 };
 
 const rootReducer = combineReducers({
   global: globalReducer,
+  ui: uiReducer,
   [api.reducerPath]: api.reducer,
 });
 
