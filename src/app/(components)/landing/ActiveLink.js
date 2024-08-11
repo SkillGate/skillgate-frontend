@@ -1,15 +1,14 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const ActiveLink = ({ href, children }) => {
-  const router = useRouter();
+  const pathname = usePathname();
 
-  // Use the pathname of the current route to determine if the link should be active
-  const isActive = router.asPath === href;
+  const isActive = pathname === href;
 
   return (
     <Link href={href}>
-      <div className={` ${isActive ? "active" : ""}`}>{children}</div>
+      <div className={isActive ? 'active' : ''}>{children}</div>
     </Link>
   );
 };

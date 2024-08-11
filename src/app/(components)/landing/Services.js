@@ -1,6 +1,6 @@
 import { Fade } from "react-awesome-reveal";
 import { useCallback } from "react";
-import { ServiceImages, ServiceTexts } from "../../constants/service";
+import { ServiceImages, ServiceTexts } from "@/constants/service";
 
 const Services = () => {
   const renderServiceIcon = useCallback((element) => {

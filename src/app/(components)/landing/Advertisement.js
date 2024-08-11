@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Marquee from "react-fast-marquee";
 import { Fade } from "react-awesome-reveal";
+import { advertisementsData } from "@/constants/advertisementData";
 
 const Advertisement = () => {
   return (
@@ -31,7 +34,7 @@ const Advertisement = () => {
                     play={true}
                     direction="left"
                   >
-                    {advertisementtData.map(({ name, position, image }) => (
+                    {advertisementsData.map(({ name, position, image }) => (
                       <button key={name}>
                       <div
                         className="shadow-lg bg-white dark:bg-dark-card rounded-lg w-66 h-70 m-8 flex flex-col items-center justify-center p-8 transition-transform ease-in-out duration-300 hover:scale-110 shadow-purple-400/50 hover:shadow-lg hover:shadow-purple-400/50"

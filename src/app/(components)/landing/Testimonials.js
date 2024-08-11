@@ -1,11 +1,10 @@
+"use client";
+
 import { useCallback, useRef } from "react";
-import {
-  TestimonialImages,
-  TestimonialTexts,
-} from "../../constants/Testimonial";
 import Slider from "react-slick";
 import { FaCaretDown } from "react-icons/fa";
 import { FaCaretUp } from "react-icons/fa";
+import { TestimonialTexts, TestimonialImages } from "@/constants/Testimonial";
 
 const Testimonials = () => {
   const sliderRef = useRef(null);

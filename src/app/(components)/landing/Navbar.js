@@ -1,15 +1,21 @@
 import { motion } from "framer-motion";
 import { FiDelete, FiMoon, FiSun } from "react-icons/fi";
 import { BiMenu } from "react-icons/bi";
-import { useUiContext } from "../../contexts/UiContext";
-import { actioTypes } from "../../reducers/uiReducer";
 import Image from "next/image";
 import Link from "next/link";
-import { navLinks } from "../../data/links";
-import useDarkMode from "../../helpers/useDarkMode";
-import { imageUrl } from "../../constants";
+import useDarkMode from "@/helpers/useDarkMode";
+import { imageUrl } from "@/constants";
 import ActiveLink from "./ActiveLink";
 import { useEffect, useState } from "react";
+import { navLinks } from "@/constants/links";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleDropdown,
+  closeDropdown,
+  toggleSidebar,
+  closeSidebar,
+  openSidebar,
+} from "@/state/uiReducer";
 
 const MainNavbar = () => {
   const [mode, toggleMode] = useDarkMode("JobIt-Next-theme-mode");
@@ -17,24 +23,27 @@ const MainNavbar = () => {
   const [navbarFixed, setNavbarFixed] = useState();
   const [navBarColor, setNavBarColor] = useState(false);
 
-  const { dispatch, isSidebarOpen } = useUiContext();
+  const dispatch = useDispatch();
+  const isSidebarOpen = useSelector((state) => state.ui.isSidebarOpen);
+  console.log(isSidebarOpen);
 
   const handleDropdown = () => {
-    dispatch({ type: actioTypes.toggleDropdown });
+    dispatch(toggleDropdown());
   };
 
   const handleClose = (e) => {
     if (!e.target.classList.contains("dropdown-btn")) {
-      dispatch({ type: actioTypes.closeDropdown });
+      dispatch(closeDropdown());
     }
     if (!e.target.classList.contains("notification-btn")) {
-      dispatch({ type: actioTypes.closeNotifications });
+      dispatch(closeDropdown()); // Assuming you have an action to close notifications
     }
   };
 
   const handleCloseSidebar = (e) => {
-    if (e.target.classList.contains("mobile-modal"))
-      dispatch({ type: actioTypes.closeSidebar });
+    if (e.target.classList.contains("mobile-modal")) {
+      dispatch(closeSidebar());
+    }
   };
 
   const listenScrollEvent = () => {
@@ -42,9 +51,12 @@ const MainNavbar = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", listenScrollEvent);
+    const handleScroll = () => {
+      window.scrollY > 500 ? setNavbarFixed(true) : setNavbarFixed(false);
+    };
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", listenScrollEvent);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -63,10 +75,12 @@ const MainNavbar = () => {
 
   return (
     <div
-      className={`navbar fixed w-full z-50 top-0 left-0 px-[2%] md:px-[6%] flex-center-between py-[0.5rem] ${navBarColor ? "bg-white dark:bg-dark-card" : "bg-transparent"}`}
+      className={`navbar fixed w-full z-50 top-0 left-0 px-[2%] md:px-[6%] flex-center-between py-[0.5rem] ${
+        navBarColor ? "bg-white dark:bg-dark-card" : "bg-transparent"
+      }`}
       onClick={handleClose}
     >
-      <Link href="/">
+      {/* <Link href="/">
         <div className="hidden md:block flex-shrink-0">
           <div className="image-wrapper">
             <Image
@@ -77,7 +91,7 @@ const MainNavbar = () => {
             />
           </div>
         </div>
-      </Link>
+      </Link> */}
       <Link href="/">
         <div className="md:hidden">
           <Image src={logoUrl} alt="logo" width={32} height={32} />
@@ -95,30 +109,30 @@ const MainNavbar = () => {
 
       {/*---------------------------------------- Mobile Menu------------------------------------- */}
       <div
-        className={`mobile-modal fixed w-screen h-screen top-0 left-0 bg-black/50 z-10 opacity-0 pointer-events-none transition-a ${
-          isSidebarOpen && "open"
-        }`}
+        className={`mobile-modal fixed w-screen h-screen top-0 left-0 bg-black/50 z-10 ${
+          isSidebarOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        } transition-opacity`}
         onClick={handleCloseSidebar}
       >
         <ul
-          className={`mobile-dialog absolute flex flex-col space-y-4 p-3 bg-white dark:bg-dark-card h-screen max-w-[300px] w-full -translate-x-[500px] transition-a ${
-            isSidebarOpen && "open"
-          }`}
+          className={`mobile-dialog absolute flex flex-col space-y-4 p-3 bg-white dark:bg-dark-card h-screen max-w-[300px] w-full ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform`}
         >
           <div className="flex-center-between border-b dark:border-slate-800">
             <p className="uppercase">menu</p>
             <div
               className="icon-box md:hidden"
-              onClick={() => dispatch({ type: actioTypes.closeSidebar })}
+              onClick={() => dispatch(closeSidebar())}
             >
               <FiDelete />
             </div>
           </div>
           {navLinks.map(({ id, linkText, url }) => (
-            <Link key={id} href={url} end>
-              <div onClick={() => dispatch({ type: actioTypes.closeSidebar })}>
-                {linkText}
-              </div>
+            <Link key={id} href={url}>
+              <div onClick={() => dispatch(closeSidebar())}>{linkText}</div>
             </Link>
           ))}
         </ul>
@@ -219,10 +233,10 @@ const MainNavbar = () => {
           <Dropdown />
         </div> */}
 
-        {/*------------------------------- Mobile Menu Toogle------------------------- */}
+        {/*------------------------------- Mobile Menu Toggle------------------------- */}
         <motion.div
           className="icon-box md:hidden"
-          onClick={() => dispatch({ type: actioTypes.openSidebar })}
+          onClick={() => dispatch(openSidebar())}
           whileTap={{ scale: 0.5 }}
         >
           <BiMenu />

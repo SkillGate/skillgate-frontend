@@ -1,5 +1,5 @@
+import { HeroImages, HeroTexts } from "@/constants/hero";
 import Image from "next/image";
-import { HeroImages, HeroTexts } from "../../constants/hero";
 import { Fade, Slide } from "react-awesome-reveal";
 import { FaPlayCircle } from "react-icons/fa";
 
@@ -24,15 +24,15 @@ const HeroSection = () => {
 
       <main className="w-full lg:h-full h-auto grid md:grid-cols-2 absolute top-0 left-0 lg:px-24 md:px-8 px-5 pt-24 md:pt-32 lg:pt-0">
         <div className="flex flex-col justify-center md:gap-6 gap-3 md:order-1 order-2">
-          <p className="text-color1 uppercase tracking-widest lg:text-base  text-sm font-normal">
+          <div className="text-color1 uppercase tracking-widest lg:text-base  text-sm font-normal">
             <Fade>{HeroTexts.firstText}</Fade>
-          </p>
+          </div>
           <h1 className=" text-color3 lg:text-7xl md:text-5xl text-3xl font-medium">
             <Fade>{HeroTexts.secondText}</Fade>
           </h1>
-          <p className="text-color3 md:text-base text-sm text-justify font-light">
-            <Fade>{HeroTexts.thirdText}</Fade>
-          </p>
+          <div className="text-color3 md:text-base text-sm text-justify font-light">
+            <Fade>{HeroTexts.thirdTexttask}</Fade>
+          </div>
           <div className="w-full flex md:justify-start justify-between items-center lg:gap-12 md:gap-6 gap-0">
             <button className="outline-none border-none lg:px-7 px-5 py-3 bg-primary text-white font-extralight rounded-lg">
               {HeroTexts.firstButton}
@@ -59,6 +59,14 @@ const HeroSection = () => {
                 alt="Hero Image"
                 className="w-full h-full"
               />
+              {/* <Image
+                src={HeroImages.heroImage}
+                alt="Hero Image"
+                layout="responsive"
+                width={500} // Set the appropriate width and height based on your image or use a placeholder for dynamic sizing
+                height={375}
+                className="w-full h-full"
+              /> */}
             </div>
           </Slide>
         </div>
