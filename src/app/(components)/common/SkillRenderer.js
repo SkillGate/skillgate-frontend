@@ -32,11 +32,11 @@ function SkillRenderer({ user, requiredSkills, change }) {
     <div>
       {user && skills && skills.length !== 0 ? (
         <div className="flex-align-center gap-2">
-          {skills.map((skill) =>
+          {skills.map((index, skill) =>
             skill.value != "None" ? (
-              <img src={skill.value} alt={skill.name} className="w-6" />
+              <img key={index} src={skill.value} alt={skill.name} className="w-6" />
             ) : (
-              <div className="">{skill.name}</div>
+              <div key={index} className="">{skill.name}</div>
             )
           )}
         </div>
